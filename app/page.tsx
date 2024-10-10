@@ -6,6 +6,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,9 +32,11 @@ export default function Home() {
           <button className="border border-white rounded-lg px-4 py-2">
             Join a Community 
           </button>
+         <Link href={'/projects'}>
           <button className="border bg-white text-primaryColor rounded-lg px-3 py-2 mr-4">
             Sign Up 
           </button>
+         </Link>
         </div>
 
               {/* Mobile Menu - Shown only on smaller screens */}
@@ -52,9 +55,11 @@ export default function Home() {
               <button className="border border-primaryColor rounded-lg px-4 py-2">
                 Join a Community
               </button>
+             <Link href={'/projects'} >
               <button className="border bg-primaryColor text-white rounded-lg px-3 py-2 mr-4">
                 Sign Up
               </button>
+             </Link>
             </div>
           </PopoverContent>
         </Popover>

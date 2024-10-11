@@ -2,10 +2,8 @@ require("@nomicfoundation/hardhat-toolbox");
 require("@nomicfoundation/hardhat-verify");
 
 /** @type import('hardhat/config').HardhatUserConfig */
-module.exports = {
-  // solidity: "0.8.27",
 
-  solidity: {
+module.exports = {  solidity: {
     version: "0.8.20",
     settings: {
       optimizer: {
@@ -23,18 +21,6 @@ module.exports = {
   },
   etherscan: {
     apiKey: vars.get("BASE_SCAN_API"),
-
-    // customChains: [
-    //   {
-    //     network: "scrollSepolia",
-    //     chainId: 534351,
-    //     urls: {
-    //       apiURL: "https://api-sepolia.scrollscan.com/api",
-    //       browserURL: "https://sepolia.scrollscan.com/",
-    //     },
-    //   },
-    // ],
   },
 };
 
-//0x94b38F87880912aa4F46b4A7631315B933f67A2c

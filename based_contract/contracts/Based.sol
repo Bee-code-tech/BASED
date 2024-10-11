@@ -13,7 +13,7 @@ contract Based {
     address immutable owner;
 
     using UserProfileLib for *;
-    using CommunityLib for *; // Enable use of library functions
+    using CommunityLib for *;
     using ProjectLib for *;
     using PostLib for *;
 

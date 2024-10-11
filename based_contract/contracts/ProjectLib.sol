@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "contracts/BasedErrors.sol";
+import "./BasedErrors.sol";
 
 library ProjectLib {
 
@@ -9,8 +9,6 @@ library ProjectLib {
     event JoinedProject(address indexed _member, bytes32 indexed _projId);
     event MemberLeft(address indexed _member, bytes32 indexed _projId);
 
-//0x3ee96b78449050fe0ccc91d9d7e2ccc89c9b4755adf63d1675f0e3f5f29af7c0
-//0x00151a92cd40b24f54d77f570f2407b9db703cec3f9742f273f357a2302059f0
 
     struct Project {
         bytes32 projectId;

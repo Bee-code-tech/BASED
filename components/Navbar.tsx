@@ -9,11 +9,13 @@ import { Button } from "@/components/ui/button";
 import { Menu } from 'lucide-react'; 
 import avatar from '../assets/avatar.png';
 import { FaUser, FaSignOutAlt } from 'react-icons/fa'; // Profile and Logout Icons
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"; // Import from shadcn
 
 const Navbar = () => {
   const pathname = usePathname();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // For profile dropdown
   const dropdownRef = useRef<HTMLDivElement>(null); // For detecting outside clicks
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false); // For mobile popover
 
   const links = [
     { name: 'Highlight', path: '/highlights' },
@@ -54,24 +56,24 @@ const Navbar = () => {
           Create project
         </Button>
 
-        {/* Profile Custom Dropdown */}
-        <div className="relative">
+        {/* Custom Dropdown for Profile */}
+        <div className="relative ">
           <div 
             onClick={() => setIsDropdownOpen(!isDropdownOpen)} 
-            className="cursor-pointer h-12 w-12  rounded-full flex items-center"
+            className="cursor-pointer h-12 w-12 rounded-full flex items-center"
           >
-            <Image src={avatar} alt='profile picture' width={12} height={12} className='w-full object-cover cursor-pointer' />
+            <Image src={avatar} alt='profile picture' width={48} height={48} className='rounded-full object-cover' />
           </div>
-          
+
           {isDropdownOpen && (
             <div
-              ref={dropdownRef} // Attach ref to dropdown
+              ref={dropdownRef}
               className="absolute right-0 mt-2 w-auto bg-white border border-gray-200 rounded-lg shadow-lg p-4 z-10"
             >
-              {/* Profile picture and wallet address */}
+              {/* Profile info */}
               <div className="flex items-center gap-4 mb-4">
                 <div className="rounded-full h-12 w-12">
-                  <Image src={avatar} alt='profile' width={12} height={12} className='w-full object-cover cursor-pointer' />
+                  <Image src={avatar} alt='profile' width={48} height={48} className='w-full object-cover' />
                 </div> 
                 <div>
                   <h4 className="font-bold">doctorbee.base.eth</h4> 
@@ -95,13 +97,28 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      <div className="flex gap-2 items-center lg:hidden">
-        <div className="lg:hidden">
-          <Button variant="ghost">
-            <Menu className="h-6 w-6" />
-          </Button>
-        </div>
+      {/* Mobile Menu with Popover */}
+      <div className="lg:hidden flex items-center gap-2">
+        {/* Mobile Popover for Links */}
+        <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+          <PopoverTrigger asChild>
+            <Button variant="ghost" onClick={() => setIsPopoverOpen(!isPopoverOpen)}>
+              <Menu className="h-6 w-6" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent side="bottom" align="end">
+            <div className="flex flex-col items-start justify-center gap-4 mt-8 w-full">
+              {links.map((link) => (
+                <Link key={link.path} href={link.path} className={`${pathname === link.path ? 'text-red-500' : 'text-primaryColor'} cursor-pointer`}>
+                  {link.name}
+                </Link>
+              ))}
+              <Button className='bg-primaryColor rounded-lg px-4 py-2 text-white'>
+                Create project
+              </Button>
+            </div>
+          </PopoverContent>
+        </Popover>
 
         {/* Profile Custom Dropdown for Mobile */}
         <div className="relative lg:hidden">
@@ -109,7 +126,7 @@ const Navbar = () => {
             onClick={() => setIsDropdownOpen(!isDropdownOpen)} 
             className="cursor-pointer h-12 w-12 rounded-full"
           >
-            <Image src={avatar} alt='profile picture' width={12} height={12} className='w-full object-cover cursor-pointer' />
+            <Image src={avatar} alt='profile picture' width={48} height={48} className='w-full object-cover cursor-pointer' />
           </div>
           
           {isDropdownOpen && (
@@ -120,7 +137,7 @@ const Navbar = () => {
               {/* Profile picture and wallet address */}
               <div className="flex items-center gap-4 mb-4">
                 <div className="h-12 w-12 rounded-full">
-                  <Image src={avatar} alt='profile picture' width={12} height={12} className='w-full object-cover cursor-pointer' />
+                  <Image src={avatar} alt='profile picture' width={48} height={48} className='w-full object-cover cursor-pointer' />
                 </div> 
                 <div>
                   <h4 className="font-bold">doctorbee.base.eth</h4> 

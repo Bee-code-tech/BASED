@@ -60,7 +60,10 @@ const SearchCommunity: React.FC<SearchCommunityProps> = ({ title }) => {
         {/* Display Posts if there are results */}
         {filteredPosts.length > 0 && (
           <>
-            <h2 className="text-xl font-semibold mb-4">{title}</h2> {/* Dynamic title */}
+          <div className="w-full flex items-start">
+            <h2 className="text-xl font-semibold mb-4 text-left">{title}</h2>
+
+          </div>
             <ul className="space-y-4 w-full">
               {displayedPosts.map((post, index) => (
                 <li

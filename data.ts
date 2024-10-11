@@ -1,4 +1,6 @@
 import image1 from './assets/project1.png'
+import post from './assets/post.png'
+import avatar from './assets/avatar.png'
 
 export const projects = [
     {
@@ -70,6 +72,43 @@ export const team = [
     total: '12k',
     joined: true
   }
+];
+
+
+export const postData = [
+  {
+    profilePic: avatar,
+    name: 'John Doe',
+    tagName: 'johndoe',
+    timePosted: '2h',
+    postText: "Scientists have just unveiled a groundbreaking discovery that could reshape the future of technology as we know it! Welcome to the era of Quantum Dominance!'s the Buzz? Leading researchers at the QuantumTech Institute have successfully harnessed the power of quantum entanglement to create ultra-fast, ultra-secure communication systems. 🚀🔒 Say goodbye to data breaches and hello to a new era of unbreakable encryption!" ,
+    postImage: '', // Optional post image
+    comments: 12,
+    retweets: 45,
+    likes: 120,
+  },
+  {
+    profilePic: avatar,
+    name: 'Jane Smith',
+    tagName: 'janesmith',
+    timePosted: '5h',
+    postText: "Scientists have just unveiled a groundbreaking discovery that could reshape the future of technology as we know it! Welcome to the era of Quantum Dominance!'s the Buzz? Leading researchers at the QuantumTech Institute have successfully harnessed the power of quantum entanglement to create ultra-fast, ultra-secure communication systems. 🚀🔒 Say goodbye to data breaches and hello to a new era of unbreakable encryption!",
+    postImage: '', // Optional post image
+    comments: 20,
+    retweets: 60,
+    likes: 210,
+  },
+  {
+    profilePic: avatar,
+    name: 'Mike Johnson',
+    tagName: 'mikejohnson',
+    timePosted: '1d',
+    postText: "Scientists have just unveiled a groundbreaking discovery that could reshape the future of technology as we know it! Welcome to the era of Quantum Dominance!'s the Buzz? Leading researchers at the QuantumTech Institute have successfully harnessed the power of quantum entanglement to create ultra-fast, ultra-secure communication systems. 🚀🔒 Say goodbye to data breaches and hello to a new era of unbreakable encryption!",
+    postImage: post, 
+    comments: 10,
+    retweets: 30,
+    likes: 90,
+  },
 ];
 
 

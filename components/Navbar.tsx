@@ -8,14 +8,18 @@ import logo from '../assets/Based.png';
 import { Button } from "@/components/ui/button";
 import { Menu } from 'lucide-react'; 
 import avatar from '../assets/avatar.png';
-import { FaUser, FaSignOutAlt } from 'react-icons/fa'; // Profile and Logout Icons
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"; // Import from shadcn
+import { FaUser, FaSignOutAlt } from 'react-icons/fa'; 
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"; 
+import CreateProjectModal from './CreateProjectModal';
+import CreatePostModal from './CreatePostModal'; 
 
 const Navbar = () => {
-  const pathname = usePathname();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // For profile dropdown
-  const dropdownRef = useRef<HTMLDivElement>(null); // For detecting outside clicks
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false); // For mobile popover
+  const pathname = usePathname(); 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null); 
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false); 
+  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
+  const [isPostModalOpen, setIsPostModalOpen] = useState(false); 
 
   const links = [
     { name: 'Highlight', path: '/highlights' },
@@ -41,6 +45,21 @@ const Navbar = () => {
     };
   }, []);
 
+  // Handle modal opening logic based on current page
+  const handleButtonClick = () => {
+    if (pathname === '/projects') {
+      setIsProjectModalOpen(true);  // Open project modal
+    } else {
+      setIsPostModalOpen(true);  // Open post modal
+    }
+  };
+
+  // Handle closing modals
+  const closeModals = () => {
+    setIsProjectModalOpen(false);
+    setIsPostModalOpen(false);
+  };
+
   return (
     <div className='border-b px-6 lg:px-16 flex items-center justify-between'>
       <Image src={logo} alt={'based'} className='w-28 lg:w-36 py-6' />
@@ -52,12 +71,14 @@ const Navbar = () => {
             {link.name}
           </Link>
         ))}
-        <Button className='bg-primaryColor rounded-lg px-4 py-2 text-white'>
-          Create project
+
+        {/* Dynamic Button (Create Post or Create Project) */}
+        <Button className='bg-primaryColor rounded-lg px-4 py-2 text-white' onClick={handleButtonClick}>
+          {pathname === '/projects' ? 'Create Project' : 'Create Post'}
         </Button>
 
         {/* Custom Dropdown for Profile */}
-        <div className="relative ">
+        <div className="relative">
           <div 
             onClick={() => setIsDropdownOpen(!isDropdownOpen)} 
             className="cursor-pointer h-12 w-12 rounded-full flex items-center"
@@ -99,27 +120,6 @@ const Navbar = () => {
 
       {/* Mobile Menu with Popover */}
       <div className="lg:hidden flex items-center gap-2">
-        {/* Mobile Popover for Links */}
-        <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
-          <PopoverTrigger asChild>
-            <Button variant="ghost" onClick={() => setIsPopoverOpen(!isPopoverOpen)}>
-              <Menu className="h-6 w-6" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent side="bottom" align="end">
-            <div className="flex flex-col items-start justify-center gap-4 mt-8 w-full">
-              {links.map((link) => (
-                <Link key={link.path} href={link.path} className={`${pathname === link.path ? 'text-red-500' : 'text-primaryColor'} cursor-pointer`}>
-                  {link.name}
-                </Link>
-              ))}
-              <Button className='bg-primaryColor rounded-lg px-4 py-2 text-white'>
-                Create project
-              </Button>
-            </div>
-          </PopoverContent>
-        </Popover>
-
         {/* Profile Custom Dropdown for Mobile */}
         <div className="relative lg:hidden">
           <div 
@@ -159,7 +159,36 @@ const Navbar = () => {
             </div>
           )}
         </div>
+        {/* Mobile Popover for Links */}
+        <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+          <PopoverTrigger asChild>
+            <Button variant="ghost" onClick={() => setIsPopoverOpen(!isPopoverOpen)}>
+              <Menu className="h-6 w-6" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent side="bottom" align="end">
+            <div className="flex flex-col items-start justify-center gap-4 mt-8 w-full">
+              {links.map((link) => (
+                <Link key={link.path} href={link.path} className={`${pathname === link.path ? 'text-red-500' : 'text-primaryColor'} cursor-pointer`}>
+                  {link.name}
+                </Link>
+              ))}
+              <Button className='bg-primaryColor rounded-lg px-4 py-2 text-white' onClick={handleButtonClick}>
+                {pathname === '/projects' ? 'Create Project' : 'Create Post'}
+              </Button>
+            </div>
+          </PopoverContent>
+        </Popover>
+
       </div>
+
+      {/* Modals for Create Project and Create Post */}
+      {isProjectModalOpen && (
+        <CreateProjectModal onClose={closeModals} />
+      )}
+      {isPostModalOpen && (
+        <CreatePostModal onClose={closeModals} />
+      )}
     </div>
   );
 };

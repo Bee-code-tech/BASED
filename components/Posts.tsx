@@ -14,6 +14,7 @@ const Post: React.FC<{
   comments: number;
   retweets: number;
   likes: number;
+  title?: string
 }> = ({
   profilePic,
   name,
@@ -24,13 +25,14 @@ const Post: React.FC<{
   comments,
   retweets,
   likes,
+  title
 }) => {
   // Fallback for profile picture if undefined
   const defaultProfilePic = 'https://via.placeholder.com/150'; // Default placeholder image
 
   return (
     <div className="border-b border-gray-300 p-4">
-      <h1 className='mb-8 font-bold text-2xl'>Post </h1>
+      <h1 className='mb-8 font-bold text-2xl'>{title} </h1>
       <div className="flex items-start">
         {/* Profile Picture */}
         <Image

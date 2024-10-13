@@ -86,8 +86,7 @@ export default function Home() {
 </div>
         {/* Subheading */}
         <p className="text-xl font-light ">
-          A decentralized social platform on Base Network where you own your content, connect freely, 
-          and build communities without limits.
+          A decentralized social networking platform for based builders to connect and collaborate
         </p>
 
        {/* Grid Section */}

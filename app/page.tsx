@@ -85,7 +85,7 @@ export default function Home() {
 
 </div>
         {/* Subheading */}
-        <p className="text-xl font-light ">
+        <p className="text-2xl font-bold ">
           A decentralized social networking platform for based builders to connect and collaborate
         </p>
 

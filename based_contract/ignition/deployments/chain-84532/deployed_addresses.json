@@ -1,7 +1,7 @@
 {
-  "Community#CommunityLib": "0xf0832495Ea51e2b06d9FA2bfdaA52A5E8784b590",
-  "Project#ProjectLib": "0xD515765A6c9B1c3f9A4df52f5326Eea43Ee42469",
-  "Post#PostLib": "0x0B833fed511bCaaC668Fa45131Fb9f9c7601A353",
-  "UserProfile#UserProfileLib": "0xCD362CB8030e4e537AB6e145D983Bf9d5D8C9a26",
-  "BasedModule#PaymentToken": "0xC2Ed1202284eBc34F76BedbfCfC65Fb1Ed315613"
+  "Community#CommunityLib": "0xBbcD22fd30EFA3c859f3C30a7224aB257D20b112",
+  "Project#ProjectLib": "0x97D9bcE273974455Bfc3A51E8Fd956D4209066A3",
+  "Post#PostLib": "0x9373ab1aAC601BB47053e44d29Ac0f33B5dAD3d6",
+  "UserProfile#UserProfileLib": "0xE72Aa9D0791b2Bd42c6f6cAaFd7dC9995ce77E1a",
+  "BasedModule#PaymentToken": "0x527caBd4bb83F94f1Fc1888D0691EF95e86795A1"
 }

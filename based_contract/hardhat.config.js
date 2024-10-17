@@ -1,9 +1,11 @@
 require("@nomicfoundation/hardhat-toolbox");
 require("@nomicfoundation/hardhat-verify");
+require("hardhat-contract-sizer");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 
-module.exports = {  solidity: {
+module.exports = {
+  solidity: {
     version: "0.8.20",
     settings: {
       optimizer: {
@@ -11,6 +13,13 @@ module.exports = {  solidity: {
         runs: 1000,
       },
     },
+  },
+  contractSizer: {
+    //npx hardhat size-contracts
+    alphaSort: true,
+    disambiguatePaths: false,
+    runOnCompile: true,
+    strict: true,
   },
 
   networks: {
@@ -23,4 +32,3 @@ module.exports = {  solidity: {
     apiKey: vars.get("BASE_SCAN_API"),
   },
 };
-

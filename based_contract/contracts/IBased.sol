@@ -3,28 +3,16 @@ pragma solidity ^0.8.20;
 
 interface IBased {
 
-    event Deployed(address indexed contractAddress);
-    event Registered(address indexed userAddress, string indexed username);
-    event UsernameUpdated(string indexed username, uint256 indexed timeOfChange);
-    event PictureUpdated(address indexed user, string indexed _userPicture);
-    event CommunityCreated(bytes32 indexed _commId, string indexed _communityName);
-    event JoinedCommunity(address indexed _caller, bytes32 indexed _commId);
-    event MemberRemoved(address indexed  _member, bytes32 indexed  _commId);
-    event MemberAdded(address indexed _member, bytes32 indexed _commId);
-    event MemberLeft(address indexed _member, bytes32 indexed _commId);
-    event ProjectCreated(address indexed _caller, bytes32 indexed _projectId);
-    event JoinedProject(address indexed _caller, bytes32 indexed _projId);
-    event PostCreated(address indexed _caller, bytes32 indexed _postId);
-    
-
-    struct User {
+      struct User {
         string fullName;
         string bio;
         string portfolioLink;
         string[] skills;
         string country;
-        uint256 followers;
-        uint256 following;
+        address[] followers;
+        uint256 noOfFollowers;
+        uint256 noOfFollowing;
+        address[] following;
         address userAddress;
         string userPicture;
         string username;
@@ -43,9 +31,7 @@ interface IBased {
         string username;
     }
 
-    //["Michael Dean", "I am a smart contract developer", "htts://myprofilelink.com", ["Java", "Solidity", "Cairo", "Rust"], "Nigeria", "my picture", "dean8ix"]
-
-    struct Community {
+     struct Community {
         address creator;
         bytes32 communityId;
         string communityName;
@@ -61,7 +47,7 @@ interface IBased {
         uint256 joinedAt;
     }
 
-    struct Project {
+       struct Project {
         bytes32 projectId;
         address creator;
         string projectName;
@@ -108,12 +94,13 @@ interface IBased {
 
     struct Comment {
         address commenter;
-        
         bytes32 commentId;
         string comment;
         uint256 createdAt;
         uint256 likes;
     }
+
+    
 
     
 }

@@ -1,10 +1,10 @@
 require("@nomicfoundation/hardhat-toolbox");
 require("@nomicfoundation/hardhat-verify");
+require("hardhat-contract-sizer");
 
 /** @type import('hardhat/config').HardhatUserConfig */
-module.exports = {
-  // solidity: "0.8.27",
 
+module.exports = {
   solidity: {
     version: "0.8.20",
     settings: {
@@ -13,6 +13,13 @@ module.exports = {
         runs: 1000,
       },
     },
+  },
+  contractSizer: {
+    //npx hardhat size-contracts
+    alphaSort: true,
+    disambiguatePaths: false,
+    runOnCompile: true,
+    strict: true,
   },
 
   networks: {
@@ -23,18 +30,11 @@ module.exports = {
   },
   etherscan: {
     apiKey: vars.get("BASE_SCAN_API"),
-
-    // customChains: [
-    //   {
-    //     network: "scrollSepolia",
-    //     chainId: 534351,
-    //     urls: {
-    //       apiURL: "https://api-sepolia.scrollscan.com/api",
-    //       browserURL: "https://sepolia.scrollscan.com/",
-    //     },
-    //   },
-    // ],
   },
 };
 
-//0x94b38F87880912aa4F46b4A7631315B933f67A2c
+// payment: 0x527caBd4bb83F94f1Fc1888D0691EF95e86795A1
+// https://sepolia.basescan.org/address/0x527caBd4bb83F94f1Fc1888D0691EF95e86795A1#code
+
+// based: 0xf36f55D6Df2f9d5C7829ed5751d7E88FD3E82c2E
+// https://sepolia.basescan.org/address/0xf36f55D6Df2f9d5C7829ed5751d7E88FD3E82c2E#code

@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "contracts/BasedErrors.sol";
+import "./BasedErrors.sol";
+import "./IBased.sol";
 
 library PostLib {
 
@@ -9,28 +10,11 @@ library PostLib {
     event CommentedOnPost(address indexed _commenter, bytes32 indexed _postId, bytes32 indexed _commentId);
     event PostLiked(bytes32 indexed _postId, uint256 likeCount);
 
-    struct Post {
-        address creator;
-        bytes32 postId;
-        string post;
-        string postImage;
-        uint256 createdAt;
-        uint256 likes;
-        uint256 comments;
-        uint256 repost;
-        uint256 bookmark;
-    }
-
-    struct Comment {
-        address commenter;
-        bytes32 commentId;
-        string comment;
-        uint256 createdAt;
-        uint256 likes;
-    }
+    
 
     function _createPost(
-        mapping (bytes32 => PostLib.Post) storage posts,
+        mapping (bytes32 => IBased.Post) storage posts,
+        IBased.Post[] storage allPosts,
         address _creator, 
         string memory _post_, 
         string memory _postImage
@@ -38,7 +22,7 @@ library PostLib {
 
         bytes32 _postId = keccak256(abi.encode(_creator, _post_, _postImage));
 
-        Post storage _post = posts[_postId];
+        IBased.Post storage _post = posts[_postId];
         
         _post.creator = _creator;
         _post.postId = _postId;
@@ -46,23 +30,29 @@ library PostLib {
         _post.postImage = _postImage;
         _post.createdAt = block.timestamp;
 
+        allPosts.push(_post);
+
         emit PostCreated(_creator, _postId);
     }
 
+    function _getAllPosts(IBased.Post[] storage allPosts) public pure returns (IBased.Post[] memory) {
+        return allPosts;
+    }
+
     function _commentOnPost(
-        mapping (bytes32 => PostLib.Post) storage posts,
-        mapping (bytes32 => mapping (bytes32 => PostLib.Comment)) storage userComment,
+        mapping (bytes32 => IBased.Post) storage posts,
+        mapping (bytes32 => mapping (bytes32 => IBased.Comment)) storage userComment,
         address _commenter,
         bytes32 _postId,
         string memory _comment
     ) public {
 
-        Post storage _post = posts[_postId];
+        IBased.Post storage _post = posts[_postId];
         if (_post.creator == address(0)) revert BasedErrors.POST_NOT_FOUND(_postId);
 
         bytes32 _commentId = keccak256(abi.encode(_commenter, _comment));
 
-        Comment storage _userComment = userComment[_postId][_commentId];
+        IBased.Comment storage _userComment = userComment[_postId][_commentId];
         _userComment.commenter = _commenter;
         _userComment.commentId = _commentId;
         _userComment.comment = _comment;
@@ -74,15 +64,15 @@ library PostLib {
     }
 
     function _getUserComment(
-        mapping (bytes32 => mapping (bytes32 => PostLib.Comment)) storage userComment,
+        mapping (bytes32 => mapping (bytes32 => IBased.Comment)) storage userComment,
         bytes32 _postId,
         bytes32 _commentId
-    ) public view returns (Comment memory) {
+    ) public view returns (IBased.Comment memory) {
         return userComment[_postId][_commentId];
     }
 
     function _likePost(
-        mapping (bytes32 => PostLib.Post) storage posts,
+        mapping (bytes32 => IBased.Post) storage posts,
         bytes32 _postId
     ) public {
         posts[_postId].likes += 1;

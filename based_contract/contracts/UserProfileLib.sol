@@ -1,55 +1,30 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "contracts/BasedErrors.sol";
+import "./BasedErrors.sol";
+import "./IBased.sol";
 
 library UserProfileLib {
 
-    struct User {
-        string fullName;
-        string bio;
-        string portfolioLink;
-        string[] skills;
-        string country;
-        address[] followers;
-        uint256 noOfFollowers;
-        uint256 noOfFollowing;
-        address[] following;
-        address userAddress;
-        string userPicture;
-        string username;
-        uint256 updateUsername;
-        uint256 registeredAt;
-        bytes32[] myCommunitiesId;
-    }
-
-    struct UserDetails {
-        string fullName;
-        string bio;
-        string portfolioLink;
-        string[] skills;
-        string country;
-        string userPicture;
-        string username;
-    }//["Michael Dean", "I am a smart contract developer", "htts://myprofilelink.com", ["Java", "Solidity", "Cairo", "Rust"], "Nigeria", "my picture", "dean8ix"]
+    //["Michael Dean", "I am a smart contract developer", "htts://myprofilelink.com", ["Java", "Solidity", "Cairo", "Rust"], "Nigeria", "my picture", "dean8ix"]
 //0x9d17ecd2f2f42067ba2eaa3c8d43c1017db6e21cddf05b03357d2f3d4bd4b4ff
 
     event Registered(address indexed userAddress, string indexed username);
     event UsernameUpdated(string indexed username, uint256 indexed timeOfChange);
     event PictureUpdated(address indexed user, string indexed _userPicture);
 
-    function addressZeroCheck(address _add) internal pure {
+    function addressZeroCheck(address _add) public pure {
         if (_add == address(0)) 
             revert BasedErrors.NOT_ALLOWED(address(0));
     }
 
     function _registerUser(
-        mapping(address => User) storage users,
+        mapping(address => IBased.User) storage users,
         address _userAddress,
-        UserDetails memory _userDetails
-    ) internal {
+        IBased.UserDetails memory _userDetails
+    ) public {
 
-        User storage newUser = users[_userAddress];
+        IBased.User storage newUser = users[_userAddress];
         
         newUser.userAddress = _userAddress;
         newUser.fullName = _userDetails.fullName;
@@ -65,12 +40,12 @@ library UserProfileLib {
     }
 
     function _updateUsername(
-        mapping(address => User) storage users,
+        mapping(address => IBased.User) storage users,
         address _userAddress,
         string memory _newUsername
-    ) internal {
+    ) public {
 
-        User storage _user = users[_userAddress];
+        IBased.User storage _user = users[_userAddress];
 
         _user.username = _newUsername;
 
@@ -80,11 +55,27 @@ library UserProfileLib {
         emit UsernameUpdated(_newUsername, timeOfChange);
     }
 
+    function _updateBio(
+        mapping(address => IBased.User) storage users,
+        address _user,
+        string memory _bio
+    ) public  {
+        users[_user].bio = _bio;
+    }
+
+    function _updatePortfolioLink(
+        mapping(address => IBased.User) storage users,
+        address _user,
+        string memory _portfolioLink
+    ) public  {
+        users[_user].portfolioLink = _portfolioLink;
+    }
+
     function _updatePicture(
-        mapping(address => User) storage users,
+        mapping(address => IBased.User) storage users,
         address _userAddress,
         string memory _newPicture
-    ) internal {
+    ) public {
 
         users[_userAddress].userPicture = _newPicture;
 
@@ -92,13 +83,13 @@ library UserProfileLib {
     }
 
     function _getUser(
-        mapping(address => User) storage users,
+        mapping(address => IBased.User) storage users,
         address _user
-    ) public view returns (User memory) {
+    ) public  view returns (IBased.User memory) {
         return users[_user];
     }
 
-    function _isUser(mapping(address => User) storage users, address _caller) public view returns(bool) {
+    function _isUser(mapping(address => IBased.User) storage users, address _caller) public  view returns(bool) {
         if (users[_caller].userAddress == address(0))
             return false;
         
@@ -106,18 +97,18 @@ library UserProfileLib {
     }
 
     function _followAUser(
-        mapping(address => User) storage users,
-        mapping (address => mapping (address => UserProfileLib.User)) storage follows,
+        mapping(address => IBased.User) storage users,
+        mapping (address => mapping (address => IBased.User)) storage follows,
         address _me,
         address _userToFollow
-        ) public {
+        ) public  {
 
             if (follows[_userToFollow][_me].userAddress == address(0)) {
 
                 follows[_userToFollow][_me] = users[_me];
 
-                User storage _acctToFollow = users[_userToFollow];
-                User storage _myAccount = users[_me];
+                IBased.User storage _acctToFollow = users[_userToFollow];
+                IBased.User storage _myAccount = users[_me];
 
                 _acctToFollow.noOfFollowers += 1;
                 _acctToFollow.followers.push(_me);
@@ -128,11 +119,11 @@ library UserProfileLib {
         }
 
         function _unfollowAUser(
-        mapping(address => User) storage users,
-        mapping (address => mapping (address => UserProfileLib.User)) storage follows,
+        mapping(address => IBased.User) storage users,
+        mapping (address => mapping (address => IBased.User)) storage follows,
         address _me,
         address _userToUnFollow
-        ) public {
+        ) public  {
 
             if (follows[_userToUnFollow][_me].userAddress != address(0)) {
 
@@ -145,15 +136,15 @@ library UserProfileLib {
         }
 
         function _getMyFollowers(
-            mapping(address => User) storage users,
-            mapping (address => mapping (address => UserProfileLib.User)) storage follows,
+            mapping(address => IBased.User) storage users,
+            mapping (address => mapping (address => IBased.User)) storage follows,
             address _me
-        ) public view returns (User[] memory _myFollowers) {
-            User memory _myAccount = users[_me];
+        ) public  view returns (IBased.User[] memory _myFollowers) {
+            IBased.User memory _myAccount = users[_me];
 
             uint256 noOfFollowers = _myAccount.noOfFollowers;
 
-            _myFollowers = new User[](noOfFollowers);
+            _myFollowers = new IBased.User[](noOfFollowers);
 
             for (uint256 i = 0; i < noOfFollowers; i++) {
                 _myFollowers[i] = follows[_me][_myAccount.followers[i]];
@@ -162,21 +153,19 @@ library UserProfileLib {
         }
 
         function _getMyFollowing(
-            mapping(address => User) storage users,
-            mapping (address => mapping (address => UserProfileLib.User)) storage follows,
+            mapping(address => IBased.User) storage users,
+            mapping (address => mapping (address => IBased.User)) storage follows,
             address _me
-        ) public view returns (User[] memory _myFollowings) {
-            User memory _myAccount = users[_me];
+        ) public  view returns (IBased.User[] memory _myFollowings) {
+            IBased.User memory _myAccount = users[_me];
 
             uint256 noOfFollowers = _myAccount.noOfFollowers;
 
-            _myFollowings = new User[](noOfFollowers);
+            _myFollowings = new IBased.User[](noOfFollowers);
 
             for (uint256 i = 0; i < noOfFollowers; i++) {
                 _myFollowings[i] = follows[_myAccount.following[i]][_me];
             }
             return _myFollowings;
         }
-
-   
 }

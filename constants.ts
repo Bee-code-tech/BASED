@@ -70,25 +70,6 @@ export const ABI = [
     anonymous: false,
     inputs: [
       {
-        indexed: true,
-        internalType: "bytes32",
-        name: "_commId",
-        type: "bytes32",
-      },
-      {
-        indexed: true,
-        internalType: "string",
-        name: "_communityName",
-        type: "string",
-      },
-    ],
-    name: "CommunityCreated",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
         indexed: false,
         internalType: "address",
         name: "contractAddress",
@@ -96,63 +77,6 @@ export const ABI = [
       },
     ],
     name: "Deployed",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "user",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "string",
-        name: "_userPicture",
-        type: "string",
-      },
-    ],
-    name: "PictureUpdated",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "userAddress",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "string",
-        name: "username",
-        type: "string",
-      },
-    ],
-    name: "Registered",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "string",
-        name: "username",
-        type: "string",
-      },
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "timeOfChange",
-        type: "uint256",
-      },
-    ],
-    name: "UsernameUpdated",
     type: "event",
   },
   {
@@ -272,7 +196,7 @@ export const ABI = [
             type: "string[]",
           },
         ],
-        internalType: "struct ProjectLib.ProjectData",
+        internalType: "struct IBased.ProjectData",
         name: "_projectData",
         type: "tuple",
       },
@@ -293,6 +217,186 @@ export const ABI = [
     name: "followAUser",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getAllCommunitie",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "creator",
+            type: "address",
+          },
+          {
+            internalType: "bytes32",
+            name: "communityId",
+            type: "bytes32",
+          },
+          {
+            internalType: "string",
+            name: "communityName",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "description",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "noOfMembers",
+            type: "uint256",
+          },
+          {
+            internalType: "address[]",
+            name: "members",
+            type: "address[]",
+          },
+          {
+            internalType: "uint256",
+            name: "createdAt",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct IBased.Community[]",
+        name: "",
+        type: "tuple[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getAllPosts",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "creator",
+            type: "address",
+          },
+          {
+            internalType: "bytes32",
+            name: "postId",
+            type: "bytes32",
+          },
+          {
+            internalType: "string",
+            name: "post",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "postImage",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "createdAt",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "likes",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "comments",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "repost",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "bookmark",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct IBased.Post[]",
+        name: "",
+        type: "tuple[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getAllProjects",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "bytes32",
+            name: "projectId",
+            type: "bytes32",
+          },
+          {
+            internalType: "address",
+            name: "creator",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "projectName",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "projectImage",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "description",
+            type: "string",
+          },
+          {
+            internalType: "string[]",
+            name: "techUsed",
+            type: "string[]",
+          },
+          {
+            internalType: "string",
+            name: "projectStage",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "category",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "members",
+            type: "uint256",
+          },
+          {
+            internalType: "string",
+            name: "projectGoals",
+            type: "string",
+          },
+          {
+            internalType: "string[]",
+            name: "projectLinks",
+            type: "string[]",
+          },
+        ],
+        internalType: "struct IBased.Project[]",
+        name: "",
+        type: "tuple[]",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -343,7 +447,7 @@ export const ABI = [
             type: "uint256",
           },
         ],
-        internalType: "struct CommunityLib.Community",
+        internalType: "struct IBased.Community",
         name: "",
         type: "tuple",
       },
@@ -384,7 +488,7 @@ export const ABI = [
             type: "uint256",
           },
         ],
-        internalType: "struct CommunityLib.Member",
+        internalType: "struct IBased.Member",
         name: "",
         type: "tuple",
       },
@@ -440,7 +544,7 @@ export const ABI = [
             type: "uint256",
           },
         ],
-        internalType: "struct CommunityLib.Community[]",
+        internalType: "struct IBased.Community[]",
         name: "",
         type: "tuple[]",
       },
@@ -530,7 +634,7 @@ export const ABI = [
             type: "bytes32[]",
           },
         ],
-        internalType: "struct UserProfileLib.User[]",
+        internalType: "struct IBased.User[]",
         name: "_myFollowers",
         type: "tuple[]",
       },
@@ -620,7 +724,7 @@ export const ABI = [
             type: "bytes32[]",
           },
         ],
-        internalType: "struct UserProfileLib.User[]",
+        internalType: "struct IBased.User[]",
         name: "_myFollowers",
         type: "tuple[]",
       },
@@ -696,7 +800,7 @@ export const ABI = [
             type: "string[]",
           },
         ],
-        internalType: "struct ProjectLib.Project",
+        internalType: "struct IBased.Project",
         name: "",
         type: "tuple",
       },
@@ -747,7 +851,7 @@ export const ABI = [
             type: "uint256",
           },
         ],
-        internalType: "struct ProjectLib.ProjectMember",
+        internalType: "struct IBased.ProjectMember",
         name: "",
         type: "tuple",
       },
@@ -843,7 +947,7 @@ export const ABI = [
             type: "bytes32[]",
           },
         ],
-        internalType: "struct UserProfileLib.User",
+        internalType: "struct IBased.User",
         name: "",
         type: "tuple",
       },
@@ -894,7 +998,7 @@ export const ABI = [
             type: "uint256",
           },
         ],
-        internalType: "struct PostLib.Comment",
+        internalType: "struct IBased.Comment",
         name: "",
         type: "tuple",
       },
@@ -1012,11 +1116,37 @@ export const ABI = [
     inputs: [
       {
         internalType: "string",
+        name: "_bio",
+        type: "string",
+      },
+    ],
+    name: "updateBio",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
         name: "_userPicture",
         type: "string",
       },
     ],
     name: "updatePicture",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "_portfolioLink",
+        type: "string",
+      },
+    ],
+    name: "updatePortfolioLink",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -1074,7 +1204,7 @@ export const ABI = [
             type: "string",
           },
         ],
-        internalType: "struct UserProfileLib.UserDetails",
+        internalType: "struct IBased.UserDetails",
         name: "_userDetails",
         type: "tuple",
       },
@@ -1086,5 +1216,8 @@ export const ABI = [
   },
 ];
 
-//contract address: 0x442576ef8EA93B6aA30cb7C779b8cC1e402bca5e
-//verified: https://sepolia.basescan.org/address/0x442576ef8EA93B6aA30cb7C779b8cC1e402bca5e#code
+// payment: 0x527caBd4bb83F94f1Fc1888D0691EF95e86795A1
+// https://sepolia.basescan.org/address/0x527caBd4bb83F94f1Fc1888D0691EF95e86795A1#code
+
+// based: 0xf36f55D6Df2f9d5C7829ed5751d7E88FD3E82c2E
+// https://sepolia.basescan.org/address/0xf36f55D6Df2f9d5C7829ed5751d7E88FD3E82c2E#code

@@ -2,8 +2,21 @@ import Post from '@/components/Posts';
 import SearchCommunity from '@/components/SearchCommunity';
 import { postData } from '@/data';
 import React from 'react';
+import { useReadContracts, useAccount } from "wagmi";
+import { CONTRACT_ADDRESS, ABI } from "@/constants";
+import { toast } from "react-toastify";
+import {
+  Transaction,
+  TransactionButton,
+  TransactionStatus,
+  TransactionStatusAction,
+  TransactionStatusLabel,
+} from "@coinbase/onchainkit/transaction";
+import type { LifecycleStatus } from "@coinbase/onchainkit/transaction";
+import type { ContractFunctionParameters } from "viem";
 
 const Highlight = () => {
+
   return (
     <div className='grid grid-cols-1 lg:grid-cols-10 items-start justify-center min-h-screen container mx-auto gap-6'>
       {/* Left side with posts */}

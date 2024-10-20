@@ -1,34 +1,48 @@
 
-## Based
-First, run the development server:
+# Based
+Based is a decentralized social media platform created specifically for Base builders—developers, designers, creators, and innovators who work on the Base network. Our goal is to help builders connect, collaborate, and share their work while maintaining control over their data. Based also aims to bring more people onchain by helping newbies get involved in Web3 through a supportive community.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Why Based?
+The Base ecosystem is rapidly growing, with a diverse range of projects and ideas. However, it can be difficult to find the right people to collaborate with and learn about what the community is up to. Based solves this by bringing all Base builders together in one place, making it easier to find collaborators, stay updated on new projects, and engage with the community. Whether you’re a senior developer or a newcomer to Base, Based offers the perfect environment to grow and thrive within the network.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Our Vision
+At Based, we aim to empower Base builders to connect and collaborate, helping onboard more people on the blockchain and driving growth within the Base ecosystem.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features
+- Authentication:Wallet authentication ensures secure access and gives users control over their data, building trust in the community.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Profile: Users can display their skills and projects, making it easy to connect and collaborate with others.
 
-## Learn More
+- Community: Connects Base builders in the same region, fostering local collaboration and knowledge sharing.
 
-To learn more about Next.js, take a look at the following resources:
+- Channel: Enables focused discussions across multiple topics, enhancing communication and engagement.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Projects: A central hub for discovering and collaborating on projects, helping builders find relevant opportunities.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Notification: Keeps users informed about updates and activities, ensuring they stay engaged with the community.
 
-## Deploy on Vercel
+- Search/Filter: Makes it easy to find the content and people users need, improving the discovery process in the Base ecosystem.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## What's Next?
+- Mobile Access
+- Direct Messaging
+- Stories
+- Polls and Surveys
+
+
+## Contract Address
+https://sepolia.basescan.org/address/0x12D32039760A9c729A1558ae3f47f87F40E4901b#code
+
+
+
+
+
+
+
+
+
+
+
+
+

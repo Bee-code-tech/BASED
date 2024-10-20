@@ -1,29 +1,93 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
-import { X } from 'lucide-react'; // Import the close icon
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { X } from 'lucide-react';
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from './ui/select';
-import { Button } from './ui/button';
+import { useReadContracts, useAccount } from "wagmi";
+import { CONTRACT_ADDRESS, ABI } from "@/constants";
+import { toast } from "react-toastify";
+import {
+  Transaction,
+  TransactionButton,
+  TransactionStatus,
+  TransactionStatusLabel,
+} from "@coinbase/onchainkit/transaction";
+import type { LifecycleStatus } from "@coinbase/onchainkit/transaction";
+import type { ContractFunctionParameters } from "viem";
+
+interface Community {
+  creator: string;
+  id: string;
+  communityName: string;
+  description: string;
+  noOfMembers: string;
+  members: string[];
+  createdAt: string;
+}
 
 const CreatePostModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const modalRef = useRef<HTMLDivElement>(null);
-
-  // Animation state to control zoom in and out
   const [isClosing, setIsClosing] = useState(false);
-
-  // State for the selected community and post content
-  const [selectedCommunity, setSelectedCommunity] = useState('');
+  const [communities, setCommunities] = useState<Community[]>([]);
+  // Changed selectedCommunity type to string
+  const [selectedCommunity, setSelectedCommunity] = useState<string>('');
   const [postContent, setPostContent] = useState('');
 
-  // Close modal with animation
+  const { address } = useAccount();
+
+  const { data: commData, isError, isLoading } = useReadContracts({
+    contracts: [
+      {
+        address: CONTRACT_ADDRESS as `0x${string}`,
+        abi: ABI,
+        functionName: "getMyCommunities",
+        args: [address],
+      },
+    ],
+  });
+
+  const handleOnStatus = useCallback((status: LifecycleStatus) => {
+    toast.info(status.statusName);
+  }, []);
+
+  const convertToCommunity = useCallback((item: any, index: number): Community => {
+    return {
+      id: item.communityId || `doc_${index}`,
+      creator: item.creator || "",
+      description: item.description || "",
+      members: Array.isArray(item.members) ? item.members : [],
+      noOfMembers: item.noOfMembers?.toString() || "0",
+      communityName: item.communityName || "",
+      createdAt: item.createdAt || "",
+    };
+  }, []);
+
+  const convertResult = useCallback(() => {
+    if (!commData || !Array.isArray(commData)) return;
+
+    const userCommunitiesData = commData[0]?.result;
+
+    if (Array.isArray(userCommunitiesData)) {
+      const ucd = userCommunitiesData.map(convertToCommunity);
+      setCommunities(ucd);
+    } else {
+      setCommunities([]);
+    }
+  }, [commData, convertToCommunity]);
+
+  useEffect(() => {
+    if (commData && !isLoading && !isError) {
+      convertResult();
+    }
+  }, [commData, isLoading, isError, convertResult]);
+
   const closeModal = () => {
     setIsClosing(true);
     setTimeout(() => {
       onClose();
-    }, 300); // Duration should match the animation duration
+    }, 300);
   };
 
-  // Close modal when clicking outside of it
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
@@ -37,17 +101,18 @@ const CreatePostModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     };
   }, []);
 
-  // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Selected Community:', selectedCommunity);
     console.log('Post Content:', postContent);
   };
 
-  // Prevent the modal from closing when interacting with the select dropdown
   const handleMouseDown = (e: React.MouseEvent) => {
     e.stopPropagation();
   };
+
+  // Find the selected community object based on the selected ID
+  const selectedCommunityObject = communities.find(comm => comm.id === selectedCommunity);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm" onClick={closeModal}>
@@ -56,30 +121,28 @@ const CreatePostModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         className={`bg-white rounded-lg shadow-lg p-6 w-full max-w-lg relative ${isClosing ? 'animate-zoom-out' : 'animate-zoom-in'}`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close Icon */}
         <button onClick={closeModal} className="absolute top-4 right-4">
           <X className="h-6 w-6 text-gray-500 hover:text-gray-700" />
         </button>
 
         <h2 className="text-2xl font-semibold mb-4">Create Post</h2>
 
-        {/* Select Community */}
         <div className="mb-4">
           <label htmlFor="community" className="block text-sm font-medium text-gray-700 mb-2">Select Community</label>
-          <Select onValueChange={(value) => setSelectedCommunity(value)}>
+          <Select onValueChange={setSelectedCommunity}>
             <SelectTrigger className="w-full" onMouseDown={handleMouseDown}>
-              <SelectValue placeholder="All Communities" />
+              <SelectValue placeholder="Select a community" />
             </SelectTrigger>
             <SelectContent onMouseDown={handleMouseDown}>
-              <SelectItem value="Based Africa">Based Africa</SelectItem>
-              <SelectItem value="Based Kenya">Based Kenya</SelectItem>
-              <SelectItem value="Based India">Based India</SelectItem>
-              <SelectItem value="Based Gbogboe">Based Gbogboe</SelectItem>
+              {communities.map((community) => (
+                <SelectItem key={community.id} value={community.id}>
+                  {community.communityName}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
 
-        {/* Post Content */}
         <textarea
           placeholder="What's on your mind?"
           className="w-full border border-gray-300 rounded-lg p-4 mb-4"
@@ -88,10 +151,26 @@ const CreatePostModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           onChange={(e) => setPostContent(e.target.value)}
         />
 
-        {/* Create Post Button */}
-        <Button onClick={handleSubmit} className="bg-primaryColor text-white w-full">
-          Create Post
-        </Button>
+        <Transaction
+          contracts={[
+            {
+              address: CONTRACT_ADDRESS as `0x${string}`,
+              abi: ABI,
+              functionName: "createPost",
+              args: [selectedCommunity, postContent],
+            },
+          ] as unknown as ContractFunctionParameters[]}
+          chainId={84532}
+          onStatus={handleOnStatus}
+        >
+          <TransactionButton
+            className="w-full px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold rounded-md shadow-md transition duration-300 ease-in-out hover:from-purple-500 hover:to-indigo-500 hover:shadow-lg"
+            text="Post"
+          />
+          <TransactionStatus>
+            <TransactionStatusLabel />
+          </TransactionStatus>
+        </Transaction>
       </div>
     </div>
   );
